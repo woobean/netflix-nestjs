@@ -34,7 +34,7 @@ export class MovieService {
   async findAll(dto: GetMoviesDto) {
     const { title } = dto;
 
-    const qb = await this.movieRepository
+    const qb = this.movieRepository
       .createQueryBuilder('movie')
       .leftJoinAndSelect('movie.director', 'director')
       .leftJoinAndSelect('movie.genres', 'genres');
@@ -61,6 +61,7 @@ export class MovieService {
       .leftJoinAndSelect('movie.director', 'director')
       .leftJoinAndSelect('movie.genres', 'genres')
       .leftJoinAndSelect('movie.detail', 'detail')
+      .leftJoinAndSelect('movie.creator', 'creator')
       .where('movie.id = :id', { id })
       .getOne();
 
@@ -71,7 +72,11 @@ export class MovieService {
     return movie;
   }
 
-  async create(createMovieDto: CreateMovieDto, qr: QueryRunner) {
+  async create(
+    createMovieDto: CreateMovieDto,
+    userId: number,
+    qr: QueryRunner,
+  ) {
     const director = await qr.manager.findOne(Director, {
       where: {
         id: createMovieDto.directorId,
@@ -108,11 +113,6 @@ export class MovieService {
     const movieFolder = join('public', 'movie');
     const tempFolder = join('public', 'temp');
 
-    await rename(
-      join(process.cwd(), tempFolder, createMovieDto.movieFileName),
-      join(process.cwd(), movieFolder, createMovieDto.movieFileName),
-    );
-
     const movie = await qr.manager
       .createQueryBuilder()
       .insert()
@@ -123,6 +123,9 @@ export class MovieService {
           id: movieDetailId,
         },
         director,
+        creator: {
+          id: userId,
+        },
         movieFilePath: join(movieFolder, createMovieDto.movieFileName),
       })
       .execute();
@@ -134,6 +137,11 @@ export class MovieService {
       .relation(Movie, 'genres')
       .of(movieId)
       .add(genres.map((genre) => genre.id));
+
+    await rename(
+      join(process.cwd(), tempFolder, createMovieDto.movieFileName),
+      join(process.cwd(), movieFolder, createMovieDto.movieFileName),
+    );
 
     return await qr.manager.findOne(Movie, {
       where: {
@@ -259,7 +267,7 @@ export class MovieService {
       //   where: {
       //     id,
       //   },
-      //   relations: ['detail', 'director']
+      //   relations: { detail: true, director: true }
       // });
 
       // newMovie.genres = newGenres;
