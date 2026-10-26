@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  Inject,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
@@ -19,6 +20,7 @@ import { join } from 'path';
 import { rename } from 'fs/promises';
 import { User } from 'src/user/entities/user.entity';
 import { MovieUserLike } from './entity/movie-user-like.entity';
+import { CACHE_MANAGER, Cache } from '@nestjs/cache-manager';
 
 @Injectable()
 export class MovieService {
@@ -37,9 +39,31 @@ export class MovieService {
     private readonly movieUserLikeRepository: Repository<MovieUserLike>,
     private readonly dataSource: DataSource,
     private readonly commonService: CommonService,
+    @Inject(CACHE_MANAGER)
+    private readonly cacheManager: Cache,
   ) {}
 
-  async findAll(dto: GetMoviesDto) {
+  async findRecent() {
+    const cacheData = await this.cacheManager.get('MOVIE_RECENT');
+
+    if (cacheData) {
+      // console.log('cache 가져옴!');
+      return cacheData;
+    }
+
+    const data = await this.movieRepository.find({
+      order: {
+        createdAt: 'DESC',
+      },
+      take: 10,
+    });
+
+    await this.cacheManager.set('MOVIE_RECENT', data);
+
+    return data;
+  }
+
+  async findAll(dto: GetMoviesDto, userId?: number) {
     const { title } = dto;
 
     const qb = this.movieRepository
@@ -54,7 +78,38 @@ export class MovieService {
     const { nextCursor } =
       await this.commonService.applyCursorPaginationParamsToQb(qb, dto);
 
-    const [data, count] = await qb.getManyAndCount();
+    let [data, count] = await qb.getManyAndCount();
+
+    if (userId) {
+      const movieIds = data.map((movie) => movie.id);
+
+      const likedMovies = await this.movieUserLikeRepository
+        .createQueryBuilder('mul')
+        .leftJoinAndSelect('mul.user', 'user')
+        .leftJoinAndSelect('mul.movie', 'movie')
+        .where('movie.id IN(:...movieIds)', { movieIds })
+        .andWhere('user.id = :userId', { userId })
+        .getMany();
+
+      /**
+       * {
+       *  movieId: boolean
+       * }
+       */
+      const likedMovieMap = likedMovies.reduce(
+        (acc, next) => ({
+          ...acc,
+          [next.movie.id]: next.isLike,
+        }),
+        {},
+      );
+
+      data = data.map((x) => ({
+        ...x,
+        /// null || true || false
+        likeStatus: x.id in likedMovieMap ? likedMovieMap[x.id] : null,
+      }));
+    }
 
     return {
       data,
