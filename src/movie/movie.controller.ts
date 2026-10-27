@@ -50,6 +50,7 @@ import {
   CacheTTL,
   CacheInterceptor as CI,
 } from '@nestjs/cache-manager';
+import { Throttle } from 'src/common/decorator/throttle.decorator';
 
 @Controller('movie')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -58,6 +59,10 @@ export class MovieController {
 
   @Get()
   @Public()
+  @Throttle({
+    count: 5,
+    unit: 'minute',
+  })
   getMovies(@Query() dto: GetMoviesDto, @UserId() userId?: number) {
     /// title 쿼리의 타입이 string 타입인지?
     return this.movieService.findAll(dto, userId);
@@ -69,8 +74,6 @@ export class MovieController {
   @CacheKey('getMoviesRecent')
   @CacheTTL(1000)
   getMoviesRecent() {
-    console.log('getMoviesRecent() 실행!');
-
     return this.movieService.findRecent();
   }
 
