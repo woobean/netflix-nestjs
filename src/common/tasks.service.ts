@@ -1,4 +1,4 @@
-import { Inject, Injectable, LoggerService } from '@nestjs/common';
+import { Inject, Injectable, type LoggerService } from '@nestjs/common';
 import { Cron, SchedulerRegistry } from '@nestjs/schedule';
 import { InjectRepository } from '@nestjs/typeorm';
 import { readdir, unlink } from 'fs/promises';
@@ -24,12 +24,12 @@ export class TasksService {
 
   // @Cron('*/5 * * * * *')
   logEverySecond() {
-    this.logger.fatal('FATAL 레벨 로그', null, TasksService.name);
+    this.logger.fatal?.('FATAL 레벨 로그', null, TasksService.name);
     this.logger.error('ERROR 레벨 로그', null, TasksService.name);
     this.logger.warn('WARN 레벨 로그', TasksService.name);
     this.logger.log('LOG 레벨 로그', TasksService.name);
-    this.logger.debug('DEBUG 레벨 로그', TasksService.name);
-    this.logger.verbose('VERBOSE 레벨 로그', TasksService.name);
+    this.logger.debug?.('DEBUG 레벨 로그', TasksService.name);
+    this.logger.verbose?.('VERBOSE 레벨 로그', TasksService.name);
   }
 
   // @Cron('* * * * * *')
