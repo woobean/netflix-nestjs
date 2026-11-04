@@ -53,22 +53,16 @@ import {
   CacheInterceptor as CI,
 } from '@nestjs/cache-manager';
 import { Throttle } from 'src/common/decorator/throttle.decorator';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
-@Controller({
-  path: 'movie',
-  version: '2',
-})
-export class MovieControllerV2 {
-  @Get()
-  getMovies() {
-    return [];
-  }
-}
-
-@Controller({
-  path: 'movie',
-  version: VERSION_NEUTRAL,
-})
+@Controller('movie')
+@ApiBearerAuth()
+@ApiTags('movie')
 @UseInterceptors(ClassSerializerInterceptor)
 export class MovieController {
   constructor(private readonly movieService: MovieService) {}
@@ -78,6 +72,17 @@ export class MovieController {
   @Throttle({
     count: 5,
     unit: 'minute',
+  })
+  @ApiOperation({
+    description: '[Movie]를 Pagination 하는 API',
+  })
+  @ApiResponse({
+    status: 200,
+    description: '성공적으로 API Pagination을 실행 했을때!',
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Pagination 데이터를 잘못 입력 했을때',
   })
   getMovies(@Query() dto: GetMoviesDto, @UserId() userId?: number) {
     /// title 쿼리의 타입이 string 타입인지?

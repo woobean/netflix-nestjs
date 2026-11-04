@@ -38,6 +38,6 @@ import {
   ValidatorConstraintInterface,
 } from 'class-validator';
 import { CreateMovieDto } from './create-movie.dto';
-import { PartialType } from '@nestjs/mapped-types';
+import { PartialType } from '@nestjs/swagger';
 
 export class UpdateMovieDto extends PartialType(CreateMovieDto) {}
