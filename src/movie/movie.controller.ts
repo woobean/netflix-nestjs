@@ -59,6 +59,7 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
+import { Movie } from './entity/movie.entity';
 
 @Controller('movie')
 @ApiBearerAuth()
