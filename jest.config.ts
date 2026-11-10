@@ -19,6 +19,7 @@ const config: Config = {
     'decorator.ts',
     'pipe.ts',
     'common/*',
+    'main.ts',
   ],
   coverageDirectory: './coverage',
   testEnvironment: 'node',

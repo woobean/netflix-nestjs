@@ -43,7 +43,7 @@ importers:
         version: 12.1.1(@nestjs/common@12.4.0(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.4.0)(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(typescript@6.0.3)
       '@nestjs/typeorm':
         specifier: ^12.0.3
-        version: 12.0.3(@nestjs/common@12.4.0(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.4.0)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@1.1.2(pg@8.23.1)(ts-node@10.9.2(@types/node@24.19.2)(typescript@6.0.3)))
+        version: 12.0.3(@nestjs/common@12.4.0(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.4.0)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@1.1.2(better-sqlite3@13.0.3)(pg@8.23.1)(ts-node@10.9.2(@types/node@24.19.2)(typescript@6.0.3)))
       '@types/multer':
         specifier: ^2.3.0
         version: 2.3.0
@@ -65,6 +65,9 @@ importers:
       joi:
         specifier: ^18.3.2
         version: 18.3.2
+      multer:
+        specifier: ^2.5.0
+        version: 2.5.0
       nest-winston:
         specifier: ^2.0.0
         version: 2.0.0(@nestjs/common@12.4.0(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(winston@3.19.0)
@@ -88,7 +91,7 @@ importers:
         version: 7.8.2
       typeorm:
         specifier: ^1.1.2
-        version: 1.1.2(pg@8.23.1)(ts-node@10.9.2(@types/node@24.19.2)(typescript@6.0.3))
+        version: 1.1.2(better-sqlite3@13.0.3)(pg@8.23.1)(ts-node@10.9.2(@types/node@24.19.2)(typescript@6.0.3))
       uuid:
         specifier: ^14.0.3
         version: 14.0.3
@@ -135,6 +138,9 @@ importers:
       '@types/winston':
         specifier: ^2.4.4
         version: 2.4.4
+      better-sqlite3:
+        specifier: ^13.0.3
+        version: 13.0.3
       jest:
         specifier: ^30.0.0
         version: 30.5.2(@types/node@24.19.2)(ts-node@10.9.2(@types/node@24.19.2)(typescript@6.0.3))
@@ -1600,6 +1606,10 @@ packages:
   bcrypt@6.0.0:
     resolution: {integrity: sha512-cU8v/EGSrnH+HnxV2z0J7/blxH8gq7Xh2JFT6Aroax7UohdmiJJlxApMxtKfuI7z68NvvVcmR78k2LbT6efhRg==}
     engines: {node: '>= 18'}
+
+  better-sqlite3@13.0.3:
+    resolution: {integrity: sha512-RbOBxmLBG8uvFUc15X9+9SFemKcQ0WBuISBVkpuiaUB2qblC8UWlHEjdWVoZ8AdhSwmoEgsiXKfopX0CQxaACQ==}
+    engines: {node: '>=22'}
 
   bl@4.1.0:
     resolution: {integrity: sha512-1W07cM9gS6DcLperZfFSj+bWLtaPGSOHWhPiGzXmvVJbRLdG82sH/Kn8EtW1VqWVA54AKf2h5k5BbnIbwF3h6w==}
@@ -4367,13 +4377,13 @@ snapshots:
     optionalDependencies:
       '@nestjs/platform-express': 12.4.0(@nestjs/common@12.4.0(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.4.0)(rxjs@7.8.2)
 
-  '@nestjs/typeorm@12.0.3(@nestjs/common@12.4.0(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.4.0)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@1.1.2(pg@8.23.1)(ts-node@10.9.2(@types/node@24.19.2)(typescript@6.0.3)))':
+  '@nestjs/typeorm@12.0.3(@nestjs/common@12.4.0(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.4.0)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@1.1.2(better-sqlite3@13.0.3)(pg@8.23.1)(ts-node@10.9.2(@types/node@24.19.2)(typescript@6.0.3)))':
     dependencies:
       '@nestjs/common': 12.4.0(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@nestjs/core': 12.4.0(@nestjs/common@12.4.0(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/platform-express@12.4.0)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       reflect-metadata: 0.2.2
       rxjs: 7.8.2
-      typeorm: 1.1.2(pg@8.23.1)(ts-node@10.9.2(@types/node@24.19.2)(typescript@6.0.3))
+      typeorm: 1.1.2(better-sqlite3@13.0.3)(pg@8.23.1)(ts-node@10.9.2(@types/node@24.19.2)(typescript@6.0.3))
 
   '@noble/hashes@1.8.0': {}
 
@@ -4985,6 +4995,10 @@ snapshots:
     dependencies:
       node-addon-api: 8.9.2
       node-gyp-build: 4.8.4
+
+  better-sqlite3@13.0.3:
+    dependencies:
+      node-addon-api: 8.9.2
 
   bl@4.1.0:
     dependencies:
@@ -6815,7 +6829,7 @@ snapshots:
       media-typer: 1.1.1
       mime-types: 3.0.2
 
-  typeorm@1.1.2(pg@8.23.1)(ts-node@10.9.2(@types/node@24.19.2)(typescript@6.0.3)):
+  typeorm@1.1.2(better-sqlite3@13.0.3)(pg@8.23.1)(ts-node@10.9.2(@types/node@24.19.2)(typescript@6.0.3)):
     dependencies:
       '@sqltools/formatter': 1.2.5
       ansis: 4.5.0
@@ -6828,6 +6842,7 @@ snapshots:
       tslib: 2.9.1
       yargs: 18.2.0
     optionalDependencies:
+      better-sqlite3: 13.0.3
       pg: 8.23.1
       ts-node: 10.9.2(@types/node@24.19.2)(typescript@6.0.3)
     transitivePeerDependencies:
