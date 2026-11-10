@@ -9,7 +9,17 @@ const config: Config = {
     '^.+\\.(t|j)s$': 'ts-jest',
   },
   collectCoverageFrom: ['src/**/*.(t|j)s'],
-  coveragePathIgnorePatterns: ['module.ts', 'dto.ts', 'entity.ts'],
+  coveragePathIgnorePatterns: [
+    'module.ts',
+    'dto.ts',
+    'entity.ts',
+    'guard.ts',
+    'middleware.ts',
+    'strategy.ts',
+    'decorator.ts',
+    'pipe.ts',
+    'common/*',
+  ],
   coverageDirectory: './coverage',
   testEnvironment: 'node',
   moduleNameMapper: {

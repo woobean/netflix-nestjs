@@ -7,7 +7,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Role, User } from 'src/user/entities/user.entity';
 import { Repository } from 'typeorm';
-import  bcrypt from 'bcrypt';
+import bcrypt from 'bcrypt';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { envVariableKeys } from 'src/common/const/env.const';
