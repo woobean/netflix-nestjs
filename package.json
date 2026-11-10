@@ -19,7 +19,8 @@
     "test:cov": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --coverage",
     "test:debug": "node --inspect-brk --experimental-vm-modules -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --config ./test/jest-e2e.json",
-    "test:user": "pnpm run test --testPathPatterns=src/user --coverage --collectCoverageFrom=\"src/user/**\""
+    "test:user": "pnpm run test --testPathPatterns=src/user --coverage --collectCoverageFrom=\"src/user/**\"",
+    "test:user:watch": "pnpm run test:user --watch"
   },
   "dependencies": {
     "@nestjs/cache-manager": "^12.0.4",
